@@ -1,15 +1,14 @@
 import WWW from 'base/WWW.js';
 
-function gerServerHost() {
-  console.debug(process.env);
-  const { REACT_APP_SERVER_HOST } = process.env;
-  return REACT_APP_SERVER_HOST;
+const SERVER_TYPE_TO_HOST = {
+  gig: process.env?.REACT_APP_HOST_GIG || 'http://localhost:4001',
+  geo: process.env?.REACT_APP_HOST_GEO || 'http://localhost:4002',
 }
 
 export default class Server {
   static getURL(serverType, cmd, paramsList) {
-    const host = gerServerHost();
-    return `${host}/${serverType}_server/${cmd}/${paramsList.join('/')}`
+    const host = SERVER_TYPE_TO_HOST[serverType];
+    return `${host}/${cmd}/${paramsList.join('/')}`
   }
 
   static async run(serverType, cmd, paramsList) {
